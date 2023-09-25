@@ -6,7 +6,7 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">roles</th>
-          <th scope="col">password</th>
+          {# <th scope="col">password</th> #}
           <th scope="col">First name</th>
           <th scope="col">Last name</th>
           <th scope="col">email</th>
@@ -19,8 +19,8 @@
         {% for user in users %}
             <tr>
                 <th scope="row">{{user.id}}</th>
-                <td>{{user.roles}}</td>
-                <td>{{user.password}}</td>
+                <td>{{ user.roles[0]}}</td>
+                {# <td>{{user.password}}</td> #}
                 <td>{{user.firstName}}</td>
                 <td>{{user.lastName}}</td>
                 <td>{{user.email}}</td>
@@ -32,7 +32,6 @@
                 </td>
             </tr>
         {% endfor %}
-
       </tbody>
     </table>
     <div>

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 #[Route('/user', name: 'user_')]
 class UserController extends AbstractController
@@ -23,20 +24,23 @@ class UserController extends AbstractController
     // }
 
     #[Route('/create', name: 'create')]
-    public function create(EntityManagerInterface $entityManager, Request $request): Response
+    public function create(EntityManagerInterface $entityManager, Request $request, UserPasswordEncoderInterface  $passwrodEncoder): Response
     {
         $user = new User();
 
         $form = $this->createForm(UserFormType::class, $user);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('Save')->isClicked()) {
+                $user->setPassword($passwrodEncoder->encodePassword($user, $form->get('password')->getData()));
+                $user->setRoles(['ROLE_USER']);
                 $entityManager->persist($user);
                 $entityManager->flush();
                 return $this->redirect($this->generateUrl('user_show'));
             }
-        } else if ($form->get('Cancel')->isClicked()) {
+        } else if ($form->get('Cancel')->isClicked() && $form->isValid() == false) {
             return $this->redirect($this->generateUrl('user_show'));
         }
 
