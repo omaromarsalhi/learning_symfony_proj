@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Validator\EntitiesValidator;
+use App\Validator\Entities;
 use App\Form\UserFormType;
+use App\Form\UserUpdateType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 #[Route('/user', name: 'user_')]
 class UserController extends AbstractController
@@ -75,13 +79,19 @@ class UserController extends AbstractController
     public function update(EntityManagerInterface $entityManager, Request $request, UserRepository $entityController, $id): Response
     {
         $user = $entityController->find($id);
-        $form = $this->createForm(UserFormType::class, $user);
+        $form = $this->createForm(UserUpdateType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->get('Save')->isClicked() && $form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-            return $this->redirect($this->generateUrl('user_show'));
+
+            $validator = new EntitiesValidator($entityManager);
+            $bool = $validator->validate4Update($user->getId(), $user->getEmail(), new Entities());
+
+            if ($bool) {
+                $entityManager->flush();
+                return $this->redirect($this->generateUrl('user_show'));
+            }
         } else if ($form->get('Cancel')->isClicked()) {
             return $this->redirect($this->generateUrl('user_show'));
         }
