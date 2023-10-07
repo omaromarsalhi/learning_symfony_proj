@@ -44,7 +44,7 @@ class UserController extends AbstractController
                 $entityManager->flush();
                 return $this->redirect($this->generateUrl('user_show'));
             }
-        } else if ($form->get('Cancel')->isClicked() && $form->isValid() == false) {
+        } else if ($form->get('Cancel')->isClicked()) {
             return $this->redirect($this->generateUrl('user_show'));
         }
 
@@ -83,7 +83,7 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->get('Save')->isClicked() && $form->isSubmitted() && $form->isValid()) {
+        if ($form->get('Save')->isClicked() && $form->isSubmitted()) {
 
             $validator = new EntitiesValidator($entityManager);
             $bool = $validator->validate4Update($user->getId(), $user->getEmail(), new Entities());

@@ -7,6 +7,7 @@ use App\Validator\Entities;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,19 +26,19 @@ class UserFormType extends AbstractType
             //     // these options are passed to each "email" type
             //     'entry_options' => [],
             // ])
-            ->add('firstName')
-            ->add('lastName')
-            ->add('password')
+            ->add('firstName', TextType::class, ['required' => false])
+            ->add('lastName', TextType::class, ['required' => false])
+            ->add('password', TextType::class, ['required' => false])
             ->add('email', EmailType::class, [
                 'constraints' =>
                 [
                     new NotBlank(),
                     new Email(),
                     new Entities(),
-                ]
+                ], 'required' => false,
             ])
-            ->add('age')
-            ->add('cin')
+            ->add('age', NumberType::class, ['required' => false])
+            ->add('cin', NumberType::class, ['required' => false])
 
             ->add('Save', SubmitType::class, [
                 'label' => 'Save',

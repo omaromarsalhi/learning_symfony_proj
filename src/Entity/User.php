@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -22,22 +23,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'you have to fill this field')]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'you have to fill this field')]
+    #[Assert\Length(
+        min: 3,
+        minMessage: 'the have to containes more than {{ limit }} charecters',
+        max: 25,
+        maxMessage: 'the have to containes less than {{ limit }} charecters'
+    )]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'you have to fill this field')]
+    #[Assert\Length(
+        min: 3,
+        minMessage: 'the have to containes more than {{ limit }} charecters',
+        max: 25,
+        maxMessage: 'the have to containes less than {{ limit }} charecters'
+    )]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'you have to fill this field')]
+    #[Assert\Positive(message: 'this has to be positive number')]
     private ?int $age = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'you have to fill this field')]
+    #[Assert\Positive(message: 'this has to be positive number')]
+    #[Assert\Length(exactly: 8, exactMessage: 'this field has to contains exactly 8 numbers')]
     private ?int $cin = null;
+
+
+
 
     public function getId(): ?string
     {
