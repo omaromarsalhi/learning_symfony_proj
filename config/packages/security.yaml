@@ -15,13 +15,19 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
     main:
-      lazy: true
-      provider: app_user_provider
+      # lazy: true
+      # provider: app_user_provider
       custom_authenticator: App\Security\UserAuthenticator
+      form_login:
+        login_path: /login/administrator
       logout:
         path: user_logout
         # where to redirect after logout
         # target: app_any_route
+      entry_point: form_login
+      guard:
+        authenticators:
+          - App\Security\MyGoogleAuthenticator
 
       remember_me:
         secret: "%kernel.secret%"
