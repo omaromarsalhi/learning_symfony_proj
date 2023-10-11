@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Entity\UserPasswrod;
 use App\Validator\Entities;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -29,7 +31,9 @@ class UserFormType extends AbstractType
             // ])
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
-            ->add('password', TextType::class, ['required' => false])
+            ->add('password', TextType::class, [
+                'required' => false,
+            ])
             ->add('email', EmailType::class, [
                 'constraints' =>
                 [
@@ -41,8 +45,7 @@ class UserFormType extends AbstractType
             ->add('age', NumberType::class, ['required' => false])
             ->add('cin', NumberType::class, ['required' => false])
             ->add('image', FileType::class, [
-                'required' => false,
-                'mapped' => false
+                'required' => false
             ])
 
             ->add('Save', SubmitType::class, [

@@ -54,6 +54,8 @@ class UserController extends AbstractController
                     $user->setImage($fileName);
                 }
 
+
+
                 $entityManager->persist($user);
                 $entityManager->flush();
                 return $this->redirect($this->generateUrl('user_show'));
