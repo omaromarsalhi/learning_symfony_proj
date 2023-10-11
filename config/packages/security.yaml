@@ -19,7 +19,7 @@ security:
       # provider: app_user_provider
       custom_authenticator: App\Security\UserAuthenticator
       form_login:
-        login_path: /login/administrator
+        login_path: /login
       logout:
         path: user_logout
         # where to redirect after logout

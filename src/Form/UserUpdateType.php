@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Validator\Entities;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,6 +29,10 @@ class UserUpdateType extends AbstractType
             ])
             ->add('age')
             ->add('cin')
+            ->add('image', FileType::class, [
+                'required' => false,
+                'mapped' => false
+            ])
 
             ->add('Save', SubmitType::class, [
                 'label' => 'Save',

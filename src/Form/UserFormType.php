@@ -7,6 +7,7 @@ use App\Validator\Entities;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,6 +40,10 @@ class UserFormType extends AbstractType
             ])
             ->add('age', NumberType::class, ['required' => false])
             ->add('cin', NumberType::class, ['required' => false])
+            ->add('image', FileType::class, [
+                'required' => false,
+                'mapped' => false
+            ])
 
             ->add('Save', SubmitType::class, [
                 'label' => 'Save',

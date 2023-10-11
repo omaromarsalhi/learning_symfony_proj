@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use GuzzleHttp\Psr7\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -40,6 +41,19 @@ class UserController extends AbstractController
             if ($form->get('Save')->isClicked()) {
                 $user->setPassword($passwrodEncoder->encodePassword($user, $form->get('password')->getData()));
                 $user->setRoles(['ROLE_USER']);
+
+                $file = $form->get('image')->getData();
+                if ($file) {
+                    $fileName = md5(uniqid()) . '.' . $file->guessClientExtension();
+
+                    $file->move(
+                        $this->getParameter('upload_path'),
+                        $fileName
+                    );
+
+                    $user->setImage($fileName);
+                }
+
                 $entityManager->persist($user);
                 $entityManager->flush();
                 return $this->redirect($this->generateUrl('user_show'));
@@ -87,6 +101,18 @@ class UserController extends AbstractController
 
             $validator = new EntitiesValidator($entityManager);
             $bool = $validator->validate4Update($user->getId(), $user->getEmail(), new Entities());
+
+            $file = $form->get('image')->getData();
+
+            if ($file) {
+                $fileName = md5(uniqid()) . '.' . $file->guessClientExtension();
+                $file->move(
+                    $this->getParameter('upload_path'),
+                    $fileName
+                );
+
+                $user->setImage($fileName);
+            }
 
             if ($bool) {
                 $entityManager->flush();
