@@ -13,9 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Messenger\Transport\Serialization\Serializer;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 #[Route('/user', name: 'user_')]
 class UserController extends AbstractController
@@ -27,6 +29,9 @@ class UserController extends AbstractController
     //         'controller_name' => 'UserController',
     //     ]);
     // }
+
+
+
 
     #[Route('/create', name: 'create')]
     public function create(EntityManagerInterface $entityManager, Request $request, UserPasswordEncoderInterface  $passwrodEncoder): Response
@@ -58,10 +63,10 @@ class UserController extends AbstractController
 
                 $entityManager->persist($user);
                 $entityManager->flush();
-                return $this->redirect($this->generateUrl('user_show'));
+                return $this->redirect($this->generateUrl('user_index'));
             }
         } else if ($form->get('Cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('user_show'));
+            return $this->redirect($this->generateUrl('user_index'));
         }
 
         return $this->render('user/create.html.twig', [
@@ -69,25 +74,70 @@ class UserController extends AbstractController
         ]);
     }
 
+    // #[Route('/show', name: 'show')]
+    // public function show(UserRepository $entityController): Response
+    // {
+    //     $user = $entityController->findAll();
+
+    //     return $this->render('user/show.html.twig', [
+    //         'users' => $user,
+    //     ]);
+    // }
+
+    #[Route('/index', name: 'index')]
+    public function index(): Response
+    {
+        return $this->render('user/show.html.twig');
+    }
+
     #[Route('/show', name: 'show')]
     public function show(UserRepository $entityController): Response
     {
         $user = $entityController->findAll();
 
-        return $this->render('user/show.html.twig', [
-            'users' => $user,
-        ]);
+        $data = [];
+
+        foreach ($user as $us) {
+            $data[] = [
+                'id' => $us->getId(),
+                'firstName' => $us->getLastName(),
+                'lastName' => $us->getLastName(),
+                'role' => $us->getRoles(),
+                'age' => $us->getAge(),
+                'cin' => $us->getCin(),
+                'email' => $us->getEmail(),
+                'image' => $us->getImage(),
+            ];
+        }
+
+        return $this->json($data);
     }
 
-    #[Route('/delete/{id}', name: 'delete')]
-    public function delete(EntityManagerInterface $entityManager, UserRepository $entityController, $id)
+    // #[Route('/delete/{id}', name: 'delete')]
+    // public function delete(EntityManagerInterface $entityManager, UserRepository $entityController, $id)
+    // {
+    //     // creating the entity manager
+    //     $user = $entityController->find($id);
+    //     $entityManager->remove($user);
+    //     // actually executes the queries (i.e. the INSERT query)
+    //     $entityManager->flush();
+    //     return $this->redirect($this->generateUrl('user_show'));
+    // }
+
+
+    #[Route('/delete', name: 'delete')]
+    public function delete(EntityManagerInterface $entityManager, UserRepository $entityController, Request $request)
     {
         // creating the entity manager
-        $user = $entityController->find($id);
-        $entityManager->remove($user);
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
-        return $this->redirect($this->generateUrl('user_show'));
+        $user = $entityController->find($request->get('id'));
+        if ($user) {
+            $entityManager->remove($user);
+            // actually executes the queries (i.e. the INSERT query)
+            $entityManager->flush();
+            return $this->json("success");
+        } else {
+            return $this->json("failed");
+        }
     }
 
 
@@ -118,10 +168,10 @@ class UserController extends AbstractController
 
             if ($bool) {
                 $entityManager->flush();
-                return $this->redirect($this->generateUrl('user_show'));
+                return $this->redirect($this->generateUrl('user_index'));
             }
         } else if ($form->get('Cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('user_show'));
+            return $this->redirect($this->generateUrl('user_index'));
         }
 
         return $this->render('user/create.html.twig', [
