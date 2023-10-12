@@ -40,9 +40,9 @@ function DisplayTableMenu() {
                   <button class="btn btn-danger " onClick=deletUser(` +
           response[i].id +
           `)><i class="fa-solid fa-user-minus bntOnHover"></i></button>
-                  <a class="btn btn-light " href="{{ path('user_update',{id:` +
+                  <a class="btn btn-light " href="/user/update/` +
           response[i].id +
-          `})}}"><i class="fa-regular fa-pen-to-square bntOnHover"></i></a>
+          `"><i class="fa-regular fa-pen-to-square bntOnHover"></i></a>
               </td>
           </tr>`;
       }
