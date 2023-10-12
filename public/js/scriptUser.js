@@ -1,4 +1,4 @@
-// OMAR SALHI  IS THE OWNER OF THIS PIEACE OF USELESS CODE
+// OMAR SALHI  IS THE OWNER OF THIS PIECE OF USELESS CODE
 
 $(document).ready(function () {
   DisplayTableMenu();
