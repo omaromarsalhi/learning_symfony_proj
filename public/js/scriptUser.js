@@ -1,3 +1,5 @@
+// OMAR SALHI  IS THE OWNER OF THIS PIEACE OF USELESS CODE
+
 $(document).ready(function () {
   DisplayTableMenu();
 });
