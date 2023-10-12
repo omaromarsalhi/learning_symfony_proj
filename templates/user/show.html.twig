@@ -47,7 +47,32 @@
     </table>
     <div>
       <center>
-        <a class="btn btn-primary" type="submit" href="{{ path('user_create')}}">Create new User</a>
+        {# <a class="btn btn-primary" type="submit" href="{{ path('user_create')}}">Create new User</a> #}
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModel1">Create new User</button>
       </center>
     </div>
+
+
+
+
+
+    <div class="modal fade" id="formModel1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {# {% block fomrModal %}
+
+                    {% endblock %} #}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Send message</button>
+                </div>
+                </div>
+            </div>
+        </div>
 {% endblock %}

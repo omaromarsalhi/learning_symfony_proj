@@ -39,9 +39,9 @@ function DisplayTableMenu() {
           response[i].cin +
           `</td>
               <td class="btnContainer">
-                  <button class="btn btn-danger " onClick=deletUser(` +
+                  <button class="btn btn-danger " onclick="deletUser(` +
           response[i].id +
-          `)><i class="fa-solid fa-user-minus bntOnHover"></i></button>
+          `)"><i class="fa-solid fa-user-minus bntOnHover"></i></button>
                   <a class="btn btn-light " href="/user/update/` +
           response[i].id +
           `"><i class="fa-regular fa-pen-to-square bntOnHover"></i></a>
