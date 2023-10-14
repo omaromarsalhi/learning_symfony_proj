@@ -8,6 +8,7 @@ function DisplayTableMenu() {
   $.ajax({
     url: "/user/show",
     type: "post",
+    async: true,
     dataType: "json",
     success: function (response) {
       var projectRow = "";
@@ -63,6 +64,7 @@ function deletUser(id) {
     data: {
       id: id,
     },
+    async: true,
     success: function (response) {
       if (response == "success") {
         DisplayTableMenu();
