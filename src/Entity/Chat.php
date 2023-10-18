@@ -19,7 +19,7 @@ class Chat
     #[ORM\Column]
     private ?\DateTimeImmutable $sent_at = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $recived_at = null;
 
     #[ORM\ManyToOne]
